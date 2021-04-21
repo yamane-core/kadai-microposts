@@ -36,35 +36,7 @@ class UsersController extends Controller
             'microposts' => $microposts,
         ]);
     }
-    
-    /**
-     * ユーザをフォローするアクション。
-     *
-     * @param  $id  相手ユーザのid
-     * @return \Illuminate\Http\Response
-     */
-    public function store($id)
-    {
-        // 認証済みユーザ（閲覧者）が、 idのユーザをフォローする
-        \Auth::user()->follow($id);
-        // 前のURLへリダイレクトさせる
-        return back();
-    }
 
-    /**
-     * ユーザをアンフォローするアクション。
-     *
-     * @param  $id  相手ユーザのid
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        // 認証済みユーザ（閲覧者）が、 idのユーザをアンフォローする
-        \Auth::user()->unfollow($id);
-        // 前のURLへリダイレクトさせる
-        return back();
-    }
-    
     /**
      * ユーザのフォロー一覧ページを表示するアクション。
      *
@@ -111,5 +83,24 @@ class UsersController extends Controller
             'user' => $user,
             'users' => $followers,
         ]);
+    }
+    
+    /**
+     * ユーザのお気に入り一覧ページを表示するアクション。
+     */
+    public function favorites($id)
+    {
+        // idの値でユーザを検索して取得
+        $user = User::findOrFail($id);
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+        // ユーザのお気に入り一覧を取得
+        $favorites = $user->favorites()->paginate(10);
+
+         return view('users.favorites', [
+             'user' => $user,
+             'microposts' => $favorites,
+         ]);
+
     }
 }
