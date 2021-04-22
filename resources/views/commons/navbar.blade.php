@@ -20,11 +20,8 @@
                             <li class="dropdown-item">{!! link_to_route('users.show', 'My profile', ['user' => Auth::id()]) !!}</li>
                             <li class="dropdown-divider"></li>
                             {{-- お気に入りページへのリンク --}}
-                            <li class="dropdown-item">
-        <a href="{{ route('users.favorites', ['id' => $user->id]) }}" class=" {{ Request::routeIs('users.favorites') ? 'active' : '' }}">
-            Favorites
-        </a>
-    </li>
+                            <li class="dropdown-item">{!! link_to_route('users.favorites', 'Favorites', [Auth::id()]) !!}
+                            </li>
                             <li class="dropdown-divider"></li>
  
                             {{-- ログアウトへのリンク --}}
