@@ -103,4 +103,38 @@ class UsersController extends Controller
          ]);
 
     }
+    
+    
+    public function profile($id)
+    {
+        // idの値でユーザを検索して取得
+        $user = User::findOrFail($id);
+        
+        return view('users.profile', [
+             'user' => $user,
+         ]);
+
+    }
+    public function update(Request $request, $id)
+    {
+        // バリデーション
+        $request->validate([
+            'name' => 'required|max:255',   // 追加
+            'birth_ymd' => 'required|max:255',
+            'profile' => 'required|max:255',
+
+        ]);
+        
+        // idの値でメッセージを検索して取得
+        $user = User::findOrFail($id);
+        // メッセージを更新
+        $user->name = $request->name;    // 追加
+        $user->birth_ymd = $request->birth_ymd;
+        $user->profile = $request->profile;
+        $user->save();
+
+        // トップページへリダイレクトさせる
+        return redirect('/');
+    }
+    
 }

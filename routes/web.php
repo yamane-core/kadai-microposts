@@ -33,9 +33,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
         Route::get('favorites', 'UsersController@favorites')->name('users.favorites');    // 追加
-    });
+        //Route::resource('users', 'UsersController', ['only' => ['update']]);
+        Route::get('profile', 'UsersController@profile')->name('users.profile');
 
-    Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
+        
+    });
+    Route::resource('users', 'UsersController', ['only' => ['index', 'show','update']]);
 
     // 追加
     Route::group(['prefix' => 'microposts/{id}'], function () {
